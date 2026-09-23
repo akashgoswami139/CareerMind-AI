@@ -97,7 +97,7 @@ The LLM is explicitly instructed to avoid inventing unsupported skills or salary
 |---|---|
 | Language | Python |
 | LLM | Google Gemini |
-| Embeddings | `gemini-embedding-001` |
+| Embeddings | Jina `jina-embeddings-v5-text-small` |
 | RAG Framework | LangChain |
 | Prompting | LangChain `PromptTemplate` |
 | PDF Loading | `PyPDFLoader` |
@@ -112,17 +112,22 @@ The LLM is explicitly instructed to avoid inventing unsupported skills or salary
 ```text
 CareerMind-AI/
 │
-├── main.py
-├── docs.py
+├── app.py
+├── ingestion.py
+├── rag_chain.py
+├── retriver.py
+├── prompt.py
+├── config.py
+├── jina_embeddings.py
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
 ├── .env.example
 │
-├── jd_dataset/
+├── dataset/
 │   └── tech_jds_149.pdf
 │
-└── Vector-db/
+└── Chorma_db/
     └── # Generated Chroma files
 ```
 
@@ -134,7 +139,7 @@ CareerMind-AI/
 
 ### 1. Load the job-description dataset
 
-`docs.py` loads the PDF dataset using `PyPDFLoader`.
+`ingestion.py` loads the PDF dataset using `PyPDFLoader`.
 
 ### 2. Split the documents
 
@@ -149,10 +154,10 @@ This converts the source PDF into smaller chunks suitable for embedding and retr
 
 ### 3. Generate embeddings
 
-The project uses Google's:
+The project uses Jina's:
 
 ```text
-gemini-embedding-001
+jina-embeddings-v5-text-small
 ```
 
 to convert document chunks into vectors.
@@ -179,7 +184,7 @@ and waits between batches to reduce the chance of hitting API limits.
 
 ### 6. Analyze retrieved job descriptions
 
-`main.py` defines a LangChain `PromptTemplate` that receives:
+`prompt.py` defines a LangChain `PromptTemplate`, and `rag_chain.py` connects retrieval to Gemini. The prompt receives:
 
 ```text
 job_role
@@ -209,6 +214,7 @@ Create a local `.env` file:
 
 ```env
 GOOGLE_API_KEY=your_google_api_key
+JINA_API_KEY=your_jina_api_key
 ```
 
 Do **not** commit your real API key.
@@ -265,19 +271,22 @@ GOOGLE_API_KEY=your_google_api_key
 Make sure the dataset exists at:
 
 ```text
-jd_dataset/tech_jds_149.pdf
+dataset/tech_jds_149.pdf
 ```
 
 Then run:
 
 ```bash
-python docs.py
+python ingestion.py
 ```
 
-This creates the persistent Chroma database under:
+This creates the persistent Chroma database under `Chorma_db/`. The directory is local-only and excluded from Git.
 
 ```text
-Vector-db/
+### 6. Run the Streamlit app
+
+```bash
+streamlit run app.py
 ```
 
 ---

@@ -1,9 +1,10 @@
 python-dotenv
+requests
+streamlit
 langchain-core
 langchain-text-splitters
 langchain-community
 langchain-google-genai
-langchain-openrouter
 langchain-chroma
 chromadb
 pypdf

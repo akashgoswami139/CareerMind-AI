@@ -43,6 +43,7 @@ logs/
 # Chroma / Vector database
 # =========================
 Vector-db/
+Chorma_db/
 chroma/
 chroma_db/
 *.sqlite3

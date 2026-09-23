@@ -1,16 +1,11 @@
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 
 
 load_dotenv()
 
-model = ChatGoogleGenerativeAI (
-    model= "",
-    temprature= 0.0
-)
 
-prompt = PromptTemplate.from_template(
+prompts = PromptTemplate.from_template(
     """You are a Job Market Intelligence AI.
 
 The user will provide ONLY a job role.
@@ -120,3 +115,14 @@ Do not output markdown.
 Do not output explanations outside the JSON.
 """
 )
+
+
+
+
+
+
+
+
+
+
+
